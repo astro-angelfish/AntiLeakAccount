@@ -1,0 +1,24 @@
+httpd:
+  enabled: false
+  port: 80
+
+# api 用法：朝配置的端口发送字节流
+# 第一段为访问的uuid，第二段为生成的session id
+# 均以字符串方式发送
+api:
+  enabled: true
+  port: 37453
+
+verify-name: verify
+url-format: "http://127.0.0.1/%VERIFY_NAME%?uid=%UUID%&session=%SESSION%"
+# 验证请求超时时间（单位：毫秒）
+url-timeout: 60000
+
+email:
+  ssl: true
+  tls: false
+  hostname: smtp.qq.com
+  port: 465
+  sender: exam@qq.com
+  password: asdfghjkl123456
+  servername: ''

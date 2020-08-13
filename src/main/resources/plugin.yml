@@ -1,0 +1,6 @@
+name: AntiLeakAccount
+version: ${project.version}
+main: cn.mcres.luckyfish.antileakaccount.AntiLeakAccount
+api-version: 1.16
+authors: [Lucky_fish20]
+description: Check if the premium account is legal
