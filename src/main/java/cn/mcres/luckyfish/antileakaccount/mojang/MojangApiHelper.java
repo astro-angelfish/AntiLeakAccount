@@ -47,7 +47,7 @@ public class MojangApiHelper {
         }
     }
 
-    public static boolean validateWithEmailAndPassword(String email, String password) {
+    public static boolean validateWithEmailAndPassword(String email, String password, UUID uuid) {
         try {
             HttpsURLConnection uc = (HttpsURLConnection) new URL(authUrl).openConnection();
             try {
@@ -73,8 +73,12 @@ public class MojangApiHelper {
                 Map<String, Object> response = gson.fromJson(new InputStreamReader(uc.getInputStream()), new TypeToken<Map<String, Object>>() {
                 }.getType());
                 String accessToken = response.get("accessToken").toString();
+                Map<String, Object> selectedProfile = (Map<String, Object>) response.get("selectedProfile");
+                if (selectedProfile == null) {
+                    return false;
+                }
 
-                return accessToken != null;
+                return accessToken != null && uuid.toString().replaceAll("-", "").equals(selectedProfile.get("id"));
             } catch (Exception e) {
                 IOUtils.copy(uc.getErrorStream(), System.out);
                 return false;

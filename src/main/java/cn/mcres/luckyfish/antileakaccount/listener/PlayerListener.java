@@ -34,7 +34,7 @@ public class PlayerListener implements Listener {
                 p.sendMessage("无效的验证命令，用法：.check <邮箱> <密码>");
                 return;
             }
-            if (MojangApiHelper.validateWithEmailAndPassword(slices[1], slices[2])) {
+            if (MojangApiHelper.validateWithEmailAndPassword(slices[1], slices[2], p.getUniqueId())) {
                 p.sendMessage("第一步验证完成，请前往邮箱完成第二步验证");
                 EmailManager.sendEmail(slices[1], vm.putRequest(p));
                 return;
