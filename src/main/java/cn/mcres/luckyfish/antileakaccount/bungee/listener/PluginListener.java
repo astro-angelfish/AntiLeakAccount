@@ -28,12 +28,10 @@ public class PluginListener implements Listener {
         ByteArrayDataInput badi = ByteStreams.newDataInput(event.getData());
         String method = badi.readUTF();
         if (method.equals("add")) {
-            AntiLeakAccount.getInstance().getLogger().info("Added verified player");
             ps.addVerifiedUuid(new UUID(badi.readLong(), badi.readLong()));
         }
 
         if (method.equals("fetch")) {
-            AntiLeakAccount.getInstance().getLogger().info("Fetching player");
             UUID uid = new UUID(badi.readLong(), badi.readLong());
             boolean success = ps.isUuidVerified(uid);
 
