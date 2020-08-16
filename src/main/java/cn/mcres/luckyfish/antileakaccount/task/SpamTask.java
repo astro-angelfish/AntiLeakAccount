@@ -2,8 +2,10 @@ package cn.mcres.luckyfish.antileakaccount.task;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
 import cn.mcres.luckyfish.antileakaccount.verify.VerifyManager;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class SpamTask implements Runnable {
@@ -12,8 +14,16 @@ public class SpamTask implements Runnable {
         VerifyManager vm = AntiLeakAccount.getInstance().getVerifyManager();
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!vm.isVerified(p)) {
-                p.sendMessage(ChatColor.RED + "你还需要通过正版验证，请输入 .check <邮箱> <密码> 以进行验证");
-                p.sendMessage(ChatColor.RED + "你可以临时修改一个密码以进行验证来确保你的帐号是安全的");
+                TextComponent text = new TextComponent("你需要验证你的账户，请");
+                text.setColor(ChatColor.RED);
+                TextComponent t2 = new TextComponent("点击这里");
+                t2.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, vm.fetchPassword(p)));
+                t2.setColor(ChatColor.GOLD);
+                TextComponent t3 = new TextComponent("将密码复制到粘贴板，并将你的Minecraft账户密码改为它，并输入\".check 你的邮箱\"已进行验证");
+                t3.setColor(ChatColor.RED);
+                text.addExtra(t2);
+                text.addExtra(t3);
+                p.spigot().sendMessage(text);
             }
         }
     }
