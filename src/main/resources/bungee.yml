@@ -1,0 +1,4 @@
+name: AntiLeakAccount
+main: cn.mcres.luckyfish.antileakaccount.bungee.AntiLeakAccount
+version: ${project.version}
+author: Lucky_fish20

@@ -20,6 +20,10 @@ public class ConfigHolder {
     public final String emailPassword;
     public final String emailServerName;
 
+    public final int spamInterval;
+
+    public final boolean bungeeMode;
+
     public ConfigHolder(ConfigurationSection cs) {
         httpdEnabled = cs.getBoolean("httpd.enabled");
         httpdPort = cs.getInt("httpd.port");
@@ -38,5 +42,8 @@ public class ConfigHolder {
         emailSender = cs.getString("email.sender");
         emailPassword = cs.getString("email.password");
         emailServerName = cs.getString("email.servername");
+
+        spamInterval = cs.getInt("spam-interval");
+        bungeeMode = cs.getBoolean("bungee-mode");
     }
 }

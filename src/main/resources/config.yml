@@ -22,3 +22,9 @@ email:
   sender: exam@qq.com
   password: asdfghjkl123456
   servername: ''
+
+# 刷屏速度：刻
+spam-interval: 40
+
+# bungee模式
+bungee-mode: false

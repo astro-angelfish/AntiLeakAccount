@@ -2,6 +2,7 @@ package cn.mcres.luckyfish.antileakaccount.verify;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
 import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
+import cn.mcres.luckyfish.antileakaccount.storage.BungeeStorage;
 import cn.mcres.luckyfish.antileakaccount.storage.PlayerStorage;
 import cn.mcres.luckyfish.antileakaccount.util.PasswordHelper;
 import org.bukkit.Bukkit;
@@ -10,11 +11,17 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class VerifyManager {
-    private final PlayerStorage playerStorage = new PlayerStorage();
+    private final PlayerStorage playerStorage;
     private final Map<UUID, VerifyRequest> requests = new HashMap<>();
     private final Map<UUID, String> passwords = new HashMap<>();
 
     public VerifyManager() {
+        if (AntiLeakAccount.getInstance().getConfigHolder().bungeeMode) {
+            playerStorage = new BungeeStorage();
+        } else {
+            playerStorage = new PlayerStorage();
+        }
+
         Bukkit.getScheduler().runTaskTimer(AntiLeakAccount.getInstance(), () -> {
             List<UUID> removingUids = new ArrayList<>();
             requests.forEach((uid, request) -> {

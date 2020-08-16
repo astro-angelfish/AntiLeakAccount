@@ -15,6 +15,10 @@ public class PlayerStorage {
     private final List<UUID> verifiedPlayerUuids = new CopyOnWriteArrayList<>();
 
     public PlayerStorage() {
+        init();
+    }
+
+    protected void init() {
         File storageFile = new File(AntiLeakAccount.getInstance().getDataFolder(), "verifiedPlayers.dat");
         if (!storageFile.exists()) {
             try {

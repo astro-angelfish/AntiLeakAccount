@@ -19,7 +19,7 @@ public class SpamTask implements Runnable {
                 TextComponent t2 = new TextComponent("点击这里");
                 t2.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, vm.fetchPassword(p)));
                 t2.setColor(ChatColor.GOLD);
-                TextComponent t3 = new TextComponent("将密码复制到粘贴板，并将你的Minecraft账户密码改为它，并输入\".check 你的邮箱\"已进行验证");
+                TextComponent t3 = new TextComponent("将密码复制到粘贴板，并将你的Minecraft账户密码改为它，并输入\".check 你的邮箱\"以进行验证");
                 t3.setColor(ChatColor.RED);
                 text.addExtra(t2);
                 text.addExtra(t3);
