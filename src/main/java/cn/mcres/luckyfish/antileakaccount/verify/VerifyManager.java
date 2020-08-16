@@ -86,6 +86,11 @@ public class VerifyManager {
     }
 
     public boolean isVerified(Player player) {
-        return (!player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId()))) || playerStorage.isPlayerVerified(player);
+        if (!AntiLeakAccount.getInstance().getConfigHolder().bungeeMode) {
+            if (!player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId()))) {
+                return true;
+            }
+        }
+        return playerStorage.isPlayerVerified(player);
     }
 }

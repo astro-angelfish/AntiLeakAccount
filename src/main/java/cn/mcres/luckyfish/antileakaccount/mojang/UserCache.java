@@ -1,8 +1,5 @@
 package cn.mcres.luckyfish.antileakaccount.mojang;
 
-import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
-import org.bukkit.Bukkit;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +45,7 @@ public class UserCache {
         }
 
         CachedUser cu = cachedUserMap.get(uuid);
-        if (System.currentTimeMillis() - cu.getLastWritten() > 60000) {
+        if (System.currentTimeMillis() - cu.getLastWritten() > 120000) {
             return null;
         }
 
@@ -59,7 +56,7 @@ public class UserCache {
         CachedUser cu = new CachedUser(name);
         cachedUserMap.put(uuid, cu);
 
-        Bukkit.getScheduler().runTaskAsynchronously(AntiLeakAccount.getInstance(), this::writeToFile);
+        new Thread(this::writeToFile).start(); // instead of using BukkitScheduler#runTaskAsynchronously
     }
 
     private void writeToFile() {

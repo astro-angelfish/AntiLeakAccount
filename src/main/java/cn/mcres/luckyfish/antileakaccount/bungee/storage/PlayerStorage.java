@@ -35,15 +35,16 @@ public class PlayerStorage {
     }
 
     public boolean isPlayerVerified(ProxiedPlayer player) {
-        return isUuidVerified(player.getUniqueId()) || (!player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId())));
+        return verifiedUuids.contains(player.getUniqueId()) || !player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId()));
     }
 
     public boolean isUuidVerified(UUID uuid) {
-        return verifiedUuids.contains(uuid);
+        return isPlayerVerified(AntiLeakAccount.getInstance().getProxy().getPlayer(uuid));
     }
 
     public void addVerifiedUuid(UUID uuid) {
         verifiedUuids.add(uuid);
+        AntiLeakAccount.getInstance().getProxy().getScheduler().runAsync(AntiLeakAccount.getInstance(), this::save);
     }
 
     private void save() {

@@ -25,7 +25,7 @@ public class MojangApiHelper {
             return;
         }
 
-        new UserCache(dataFolder);
+        userCache = new UserCache(dataFolder);
     }
 
     public static String getMinecraftNameByUuid(UUID uuid) {

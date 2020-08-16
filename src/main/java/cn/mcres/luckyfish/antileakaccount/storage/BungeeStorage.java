@@ -36,9 +36,6 @@ public class BungeeStorage extends PlayerStorage {
 
     @Override
     public boolean isPlayerVerified(Player player) {
-        if (verifiedPlayers.contains(player.getUniqueId())) {
-            return true;
-        }
 
         ByteArrayDataOutput bado = ByteStreams.newDataOutput();
         bado.writeUTF("fetch");
@@ -46,7 +43,7 @@ public class BungeeStorage extends PlayerStorage {
         bado.writeLong(player.getUniqueId().getLeastSignificantBits());
         player.sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
 
-        return false;
+        return verifiedPlayers.contains(player.getUniqueId());
     }
 
     @Override
@@ -61,6 +58,8 @@ public class BungeeStorage extends PlayerStorage {
                 UUID uid = new UUID(badi.readLong(), badi.readLong());
                 if (badi.readBoolean()) {
                     verifiedPlayers.add(uid);
+                } else {
+                    verifiedPlayers.remove(uid);
                 }
             }
         }
