@@ -177,4 +177,18 @@ public class PlayerListener implements Listener {
             }
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        if (!vm.isVerified(event.getPlayer())) {
+            event.setJoinMessage("");
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        if (!vm.isVerified(event.getPlayer())) {
+            event.setQuitMessage("");
+        }
+    }
 }
