@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class UserCache {
-    private final File cacheFile = new File(AntiLeakAccount.getInstance().getDataFolder(), "usercache.dat");
+    private final File cacheFile;
     private final Map<UUID, CachedUser> cachedUserMap = new HashMap<>();
 
-    public UserCache() {
+    public UserCache(File dataFolder) {
+        cacheFile = new File(dataFolder, "usercache.dat");
         if (!cacheFile.exists()) {
             try {
                 cacheFile.createNewFile();

@@ -3,6 +3,7 @@ package cn.mcres.luckyfish.antileakaccount.bungee;
 import cn.mcres.luckyfish.antileakaccount.bungee.listener.PlayerListener;
 import cn.mcres.luckyfish.antileakaccount.bungee.listener.PluginListener;
 import cn.mcres.luckyfish.antileakaccount.bungee.storage.PlayerStorage;
+import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class AntiLeakAccount extends Plugin {
@@ -19,6 +20,7 @@ public class AntiLeakAccount extends Plugin {
         ps = new PlayerStorage();
 
         getProxy().registerChannel("ala:message");
+        MojangApiHelper.setUserCache(getDataFolder());
         getProxy().getPluginManager().registerListener(this, new PlayerListener());
         getProxy().getPluginManager().registerListener(this, new PluginListener());
     }

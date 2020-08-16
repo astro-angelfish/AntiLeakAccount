@@ -3,6 +3,7 @@ package cn.mcres.luckyfish.antileakaccount;
 import cn.mcres.luckyfish.antileakaccount.api.ApiServer;
 import cn.mcres.luckyfish.antileakaccount.http.HttpServer;
 import cn.mcres.luckyfish.antileakaccount.listener.PlayerListener;
+import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
 import cn.mcres.luckyfish.antileakaccount.task.SpamTask;
 import cn.mcres.luckyfish.antileakaccount.verify.VerifyManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +27,7 @@ public final class AntiLeakAccount extends JavaPlugin {
         saveDefaultConfig();
 
         configHolder = new ConfigHolder(getConfig());
+        MojangApiHelper.setUserCache(getDataFolder());
         verifyManager = new VerifyManager();
 
         if (configHolder.httpdEnabled) {

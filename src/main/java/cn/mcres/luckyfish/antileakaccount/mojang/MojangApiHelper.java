@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -17,12 +18,22 @@ public class MojangApiHelper {
     private static final String authUrl = "https://authserver.mojang.com/authenticate";
 
     private static final Gson gson = new Gson();
-    private static final UserCache userCache = new UserCache();
+    private static UserCache userCache = null;
+
+    public static void setUserCache(File dataFolder) {
+        if (userCache != null) {
+            return;
+        }
+
+        new UserCache(dataFolder);
+    }
 
     public static String getMinecraftNameByUuid(UUID uuid) {
-        String cache = userCache.getCachedUsername(uuid);
-        if (cache != null) {
-            return cache;
+        if (userCache != null) {
+            String cache = userCache.getCachedUsername(uuid);
+            if (cache != null) {
+                return cache;
+            }
         }
 
         try {
