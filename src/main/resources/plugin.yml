@@ -4,3 +4,24 @@ main: cn.mcres.luckyfish.antileakaccount.AntiLeakAccount
 api-version: 1.16
 authors: [Lucky_fish20]
 description: Check if the premium account is legal
+
+commands:
+  alawhitelist:
+    aliases:
+      - awhitelist
+      - awl
+    permission: antileakaccount.whitelist
+
+permissions:
+  antileakaccount.whitelist:
+    default: op
+    children:
+      antileakaccount.whitelist.add: true
+      antileakaccount.whitelist.remove: true
+      antileakaccount.whitelist.list: true
+  antileakaccount.whitelist.add:
+    default: op
+  antileakaccount.whitelist.remove:
+    default: op
+  antileakaccount.whitelist.list:
+    default: op

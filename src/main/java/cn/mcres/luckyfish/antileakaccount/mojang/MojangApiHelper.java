@@ -1,5 +1,6 @@
 package cn.mcres.luckyfish.antileakaccount.mojang;
 
+import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.IOUtils;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class MojangApiHelper {
     private static final String profileUrl = "https://sessionserver.mojang.com/session/minecraft/profile/";
     private static final String authUrl = "https://authserver.mojang.com/authenticate";
+    private static final String uuidUrl = "https://api.mojang.com/users/profiles/minecraft/";
 
     private static final Gson gson = new Gson();
     private static UserCache userCache = null;
@@ -53,6 +55,32 @@ public class MojangApiHelper {
                 userCache.writeUser(uuid, fetchName);
             }
             return fetchName;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static UUID getMinecraftUuidByName(String name) {
+        if (userCache != null) {
+            UUID cache = userCache.getCachedUuid(name);
+            if (cache != null) {
+                return cache;
+            }
+        }
+
+        try {
+            URL url = new URL(uuidUrl + name);
+            HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
+            uc.setRequestMethod("GET");
+            uc.setConnectTimeout(5000);
+            uc.setReadTimeout(5000);
+            uc.setDoInput(true);
+            uc.connect();
+            if (uc.getResponseCode() != 200) {
+                return null;
+            }
+            Map<?, ?> content = gson.fromJson(new InputStreamReader(uc.getInputStream()), Map.class);
+            return UuidHelper.fromTrimmedUuid(content.get("id").toString());
         } catch (Exception e) {
             return null;
         }

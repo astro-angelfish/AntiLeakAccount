@@ -2,6 +2,7 @@ package cn.mcres.luckyfish.antileakaccount.bungee.storage;
 
 import cn.mcres.luckyfish.antileakaccount.bungee.AntiLeakAccount;
 import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
+import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.*;
@@ -22,20 +23,11 @@ public class PlayerStorage {
             }
         }
 
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(storageFile))) {
-            int amount = dis.readInt();
-            for (int i = 0; i < amount; i ++) {
-                verifiedUuids.add(new UUID(dis.readLong(), dis.readLong()));
-            }
-        } catch (EOFException e) {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        UuidHelper.readUuidListFromFile(storageFile, verifiedUuids);
     }
 
     public boolean isPlayerVerified(ProxiedPlayer player) {
-        return verifiedUuids.contains(player.getUniqueId()) || !player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId()));
+        return verifiedUuids.contains(player.getUniqueId()) || !player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId())) || AntiLeakAccount.getInstance().getWhiteListStorage().isPlayerWhiteListed(player.getUniqueId());
     }
 
     public boolean isUuidVerified(UUID uuid) {
@@ -48,14 +40,6 @@ public class PlayerStorage {
     }
 
     private void save() {
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(AntiLeakAccount.getInstance().getDataFolder(), "verifiedPlayers.dat")))) {
-            dos.writeInt(verifiedUuids.size());
-            for (UUID uid : verifiedUuids) {
-                dos.writeLong(uid.getMostSignificantBits());
-                dos.writeLong(uid.getLeastSignificantBits());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        UuidHelper.writeUuidListToFile(new File(AntiLeakAccount.getInstance().getDataFolder(), "verifiedPlayers.dat"), verifiedUuids);
     }
 }

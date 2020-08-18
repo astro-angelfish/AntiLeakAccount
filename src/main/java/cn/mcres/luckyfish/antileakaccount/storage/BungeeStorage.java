@@ -5,6 +5,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -35,13 +36,16 @@ public class BungeeStorage extends PlayerStorage {
     }
 
     @Override
-    public boolean isPlayerVerified(Player player) {
+    public boolean isPlayerVerified(HumanEntity player) {
+        if (!(player instanceof Player)) {
+            return false;
+        }
 
         ByteArrayDataOutput bado = ByteStreams.newDataOutput();
         bado.writeUTF("fetch");
         bado.writeLong(player.getUniqueId().getMostSignificantBits());
         bado.writeLong(player.getUniqueId().getLeastSignificantBits());
-        player.sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
+        ((Player) player).sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
 
         return verifiedPlayers.contains(player.getUniqueId());
     }

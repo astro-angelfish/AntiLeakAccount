@@ -6,7 +6,7 @@
 
     <groupId>cn.mcres.luckyfish</groupId>
     <artifactId>AntiLeakAccount</artifactId>
-    <version>1.0.0-BETA</version>
+    <version>1.1.0-BETA</version>
     <packaging>jar</packaging>
 
     <name>AntiLeakAccount</name>
@@ -66,6 +66,12 @@
             <id>bungeecord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
+        <repository>
+            <id>luckyfish-repo</id>
+            <url>
+                https://raw.githubusercontent.com/Lucky-fish/mvn-repo/master/
+            </url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -76,7 +82,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.nanohttpd</groupId> <!-- <groupId>com.nanohttpd</groupId> for 2.1.0 and earlier -->
+            <groupId>org.nanohttpd</groupId>
             <artifactId>nanohttpd</artifactId>
             <version>2.2.0</version>
         </dependency>
@@ -103,6 +109,11 @@
             <version>1.16-R0.1-SNAPSHOT</version>
             <type>javadoc</type>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.mcres.luckyfish</groupId>
+            <artifactId>PluginCommons</artifactId>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

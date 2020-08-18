@@ -6,6 +6,7 @@ import cn.mcres.luckyfish.antileakaccount.storage.BungeeStorage;
 import cn.mcres.luckyfish.antileakaccount.storage.PlayerStorage;
 import cn.mcres.luckyfish.antileakaccount.util.PasswordHelper;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -85,8 +86,11 @@ public class VerifyManager {
         return passwords.get(player.getUniqueId());
     }
 
-    public boolean isVerified(Player player) {
+    public boolean isVerified(HumanEntity player) {
         if (!AntiLeakAccount.getInstance().getConfigHolder().bungeeMode) {
+            if (AntiLeakAccount.getInstance().getWhiteListStorage().isPlayerWhiteListed(player.getUniqueId())) {
+                return true;
+            }
             if (!player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId()))) {
                 return true;
             }

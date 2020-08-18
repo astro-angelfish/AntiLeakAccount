@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class UserCache {
     private final File cacheFile;
@@ -20,7 +23,7 @@ public class UserCache {
             }
         }
 
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(cacheFile))) {
+        try (DataInputStream dis = new DataInputStream(new GZIPInputStream(new FileInputStream(cacheFile)))) {
             int amount = dis.readInt();
             for (int i = 0; i < amount; i ++) {
                 long most = dis.readLong();
@@ -52,6 +55,17 @@ public class UserCache {
         return cu.getName();
     }
 
+    public UUID getCachedUuid(String name) {
+        AtomicReference<UUID> result = new AtomicReference<>();
+        cachedUserMap.forEach((uid, u) -> {
+            if (u.getName().equals(name)) {
+                result.set(uid);
+            }
+        });
+
+        return result.get();
+    }
+
     public void writeUser(UUID uuid, String name) {
         CachedUser cu = new CachedUser(name);
         cachedUserMap.put(uuid, cu);
@@ -60,7 +74,7 @@ public class UserCache {
     }
 
     private void writeToFile() {
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(cacheFile))) {
+        try (DataOutputStream dos = new DataOutputStream(new GZIPOutputStream(new FileOutputStream(cacheFile)))) {
             dos.writeInt(cachedUserMap.size());
             cachedUserMap.forEach((uid, user) -> {
                 try {
