@@ -60,6 +60,11 @@ public class WhiteListStorage {
         return whiteList.contains(uuid);
     }
 
+    public void importAllFromList(List<UUID> list) {
+        whiteList.addAll(list);
+        new Thread(this::save).start();
+    }
+
     public boolean isPlayerWhiteListed(String name) {
         return isPlayerWhiteListed(MojangApiHelper.getMinecraftUuidByName(name));
     }

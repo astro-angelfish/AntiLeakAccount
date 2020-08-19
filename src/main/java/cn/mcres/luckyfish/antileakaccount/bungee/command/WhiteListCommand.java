@@ -12,6 +12,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,17 +86,18 @@ public class WhiteListCommand extends Command {
 
                 int succ = 0;
                 int fail = 0;
+                List<UUID> uids = new ArrayList<>();
                 for (String uid : uuidList) {
                     try {
                         UUID uuid = UUID.fromString(uid);
-
-                        AntiLeakAccount.getInstance().getWhiteListStorage().addWhitelistPlayer(uuid);
+                        uids.add(uuid);
                         succ ++;
                     } catch (IllegalArgumentException e) {
                         sender.sendMessage(new TextComponent(ChatColor.RED + "无效的uuid: " + uid));
                         fail ++;
                     }
                 }
+                AntiLeakAccount.getInstance().getWhiteListStorage().importAllFromList(uids);
                 sender.sendMessage(new TextComponent(ChatColor.GREEN + "导入完毕，导入成功 " + org.bukkit.ChatColor.GOLD + succ + org.bukkit.ChatColor.GREEN + " 个，" + "导入失败 " + org.bukkit.ChatColor.GOLD + fail + " 个"));
             }
         }
