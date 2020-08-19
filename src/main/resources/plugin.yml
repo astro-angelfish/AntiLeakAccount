@@ -28,3 +28,5 @@ permissions:
     default: op
   antileakaccount.whitelist.import:
     default: op
+  antileakaccount.verify:
+    default: true
