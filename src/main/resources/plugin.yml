@@ -19,9 +19,12 @@ permissions:
       antileakaccount.whitelist.add: true
       antileakaccount.whitelist.remove: true
       antileakaccount.whitelist.list: true
+      antileakaccount.whitelist.import: true
   antileakaccount.whitelist.add:
     default: op
   antileakaccount.whitelist.remove:
     default: op
   antileakaccount.whitelist.list:
+    default: op
+  antileakaccount.whitelist.import:
     default: op
