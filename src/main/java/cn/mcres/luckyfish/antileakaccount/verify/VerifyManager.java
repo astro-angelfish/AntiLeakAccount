@@ -44,6 +44,10 @@ public class VerifyManager {
         return vr;
     }
 
+    public boolean hasRequest(Player player) {
+        return requests.containsKey(player.getUniqueId());
+    }
+
     public boolean processRequest(String fromIp, UUID uid, String sessionId) {
         VerifyRequest vr = requests.get(uid);
         if (vr == null) {

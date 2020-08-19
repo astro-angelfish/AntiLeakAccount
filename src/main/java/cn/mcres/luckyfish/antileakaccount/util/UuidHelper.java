@@ -1,7 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.util;
 
 import java.io.*;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -14,7 +14,7 @@ public class UuidHelper {
         return UUID.fromString(UUID_FIX.matcher(trimmed.replace("-", "")).replaceAll("$1-$2-$3-$4-$5"));
     }
 
-    public static void readUuidListFromFile(File targetFile, List<UUID> uuidList) {
+    public static void readUuidListFromFile(File targetFile, Collection<UUID> uuidList) {
         try (DataInputStream dis = new DataInputStream(new GZIPInputStream(new FileInputStream(targetFile)))) {
             int amount = dis.readInt();
             for (int i = 0; i < amount; i ++) {
@@ -27,7 +27,7 @@ public class UuidHelper {
         }
     }
 
-    public static void writeUuidListToFile(File targetFile, List<UUID> uuidList) {
+    public static void writeUuidListToFile(File targetFile, Collection<UUID> uuidList) {
         try (DataOutputStream dos = new DataOutputStream(new GZIPOutputStream(new FileOutputStream(targetFile)))) {
             dos.writeInt(uuidList.size());
             for (UUID uid : uuidList) {

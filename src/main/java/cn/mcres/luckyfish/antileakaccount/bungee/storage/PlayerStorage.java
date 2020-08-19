@@ -6,12 +6,10 @@ import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerStorage {
-    private final List<UUID> verifiedUuids = new ArrayList<>();
+    private final Set<UUID> verifiedUuids = new HashSet<>();
 
     public PlayerStorage() {
         File storageFile = new File(AntiLeakAccount.getInstance().getDataFolder(), "verifiedPlayers.dat");

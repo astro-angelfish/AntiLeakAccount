@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlayerStorage {
-    private final List<UUID> verifiedPlayerUuids = new CopyOnWriteArrayList<>();
+    private final Set<UUID> verifiedPlayerUuids = new HashSet<>();
 
     public PlayerStorage() {
         init();
