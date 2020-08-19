@@ -54,4 +54,12 @@ public class ApiServer {
             e.printStackTrace();
         }
     }
+
+    public void stop() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

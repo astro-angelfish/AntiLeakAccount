@@ -21,6 +21,8 @@ public final class AntiLeakAccount extends JavaPlugin {
     private ConfigHolder configHolder;
     private VerifyManager verifyManager;
     private WhiteListStorage whiteListStorage = null;
+    private HttpServer hs;
+    private ApiServer apiServer;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -41,7 +43,7 @@ public final class AntiLeakAccount extends JavaPlugin {
         }
 
         if (configHolder.httpdEnabled) {
-            HttpServer hs = new HttpServer();
+            hs = new HttpServer();
             try {
                 hs.start(114514, true);
             } catch (IOException e) {
@@ -52,7 +54,7 @@ public final class AntiLeakAccount extends JavaPlugin {
             saveResource("success.html", false);
         }
         if (configHolder.apiEnabled) {
-            new ApiServer();
+            apiServer = new ApiServer();
         }
 
         if (!configHolder.bungeeMode) {
@@ -71,6 +73,13 @@ public final class AntiLeakAccount extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        if (configHolder.httpdEnabled) {
+            hs.stop();
+        }
+
+        if (configHolder.apiEnabled) {
+            apiServer.stop();
+        }
     }
 
     public static AntiLeakAccount getInstance() {

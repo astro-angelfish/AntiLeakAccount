@@ -32,7 +32,7 @@ public class WhiteListListCommand extends SubCommandBase {
             return false;
         }
 
-        List<UUID> whiteList = AntiLeakAccount.getInstance().getWhiteListStorage().getWhiteList();;
+        List<UUID> whiteList = AntiLeakAccount.getInstance().getWhiteListStorage().getWhiteList();
         for (UUID uid : whiteList) {
             sender.sendMessage(ChatColor.YELLOW + "玩家 " + ChatColor.GREEN + MojangApiHelper.getMinecraftNameByUuid(uid) + " - " + uid);
         }

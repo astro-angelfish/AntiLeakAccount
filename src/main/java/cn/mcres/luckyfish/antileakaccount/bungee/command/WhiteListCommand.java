@@ -98,7 +98,7 @@ public class WhiteListCommand extends Command {
                     }
                 }
                 AntiLeakAccount.getInstance().getWhiteListStorage().importAllFromList(uids);
-                sender.sendMessage(new TextComponent(ChatColor.GREEN + "导入完毕，导入成功 " + org.bukkit.ChatColor.GOLD + succ + org.bukkit.ChatColor.GREEN + " 个，" + "导入失败 " + org.bukkit.ChatColor.GOLD + fail + " 个"));
+                sender.sendMessage(new TextComponent(ChatColor.GREEN + "导入完毕，导入成功 " + ChatColor.GOLD + succ + ChatColor.GREEN + " 个，" + "导入失败 " + ChatColor.GOLD + fail + " 个"));
             }
         }
     }
