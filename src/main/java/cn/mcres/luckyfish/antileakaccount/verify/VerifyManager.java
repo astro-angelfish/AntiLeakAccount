@@ -6,6 +6,7 @@ import cn.mcres.luckyfish.antileakaccount.storage.BungeeStorage;
 import cn.mcres.luckyfish.antileakaccount.storage.PlayerStorage;
 import cn.mcres.luckyfish.antileakaccount.util.PasswordHelper;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
@@ -55,9 +56,18 @@ public class VerifyManager {
             return false;
         }
 
+        return processSucceedVerifiyRequest(uid, sessionId, vr);
+    }
+
+    private boolean processSucceedVerifiyRequest(UUID uid, String sessionId, VerifyRequest vr) {
         if (vr.getSessionId().toString().replaceAll("-", "").equals(sessionId)) {
             requests.remove(uid);
             playerStorage.addVerifiedPlayer(vr.getPlayer());
+
+            Player p = Bukkit.getPlayer(uid);
+            if (p != null) {
+                p.sendMessage(ChatColor.GREEN + "你已经验证通过，过得愉快:P");
+            }
 
             return true;
         }
@@ -66,13 +76,7 @@ public class VerifyManager {
 
     public boolean processRequest(UUID uid, String sessionId) {
         VerifyRequest vr = requests.get(uid);
-        if (vr.getSessionId().toString().replaceAll("-", "").equals(sessionId)) {
-            requests.remove(uid);
-            playerStorage.addVerifiedPlayer(vr.getPlayer());
-
-            return true;
-        }
-        return false;
+        return processSucceedVerifiyRequest(uid, sessionId, vr);
     }
 
     public String fetchPassword(Player player) {

@@ -47,6 +47,9 @@ public final class AntiLeakAccount extends JavaPlugin {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            saveResource("fail.html", false);
+            saveResource("success.html", false);
         }
         if (configHolder.apiEnabled) {
             new ApiServer();
