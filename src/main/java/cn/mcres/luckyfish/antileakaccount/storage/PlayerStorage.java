@@ -33,7 +33,7 @@ public class PlayerStorage {
     }
 
     public void addVerifiedPlayer(UUID playerUid) {
-        verifiedPlayerUuids.add(playerUid.getUniqueId());
+        verifiedPlayerUuids.add(playerUid);
         Bukkit.getScheduler().runTaskAsynchronously(AntiLeakAccount.getInstance(), this::save);
     }
 

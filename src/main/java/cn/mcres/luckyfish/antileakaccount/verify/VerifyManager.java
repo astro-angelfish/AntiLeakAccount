@@ -77,10 +77,7 @@ public class VerifyManager {
             }
 
             playerStorage.addVerifiedPlayer(p.getUniqueId());
-
-            if (p != null) {
-                p.sendMessage(ChatColor.GREEN + "你已经验证通过，过得愉快:P");
-            }
+            p.sendMessage(ChatColor.GREEN + "你已经验证通过，过得愉快:P");
 
             return true;
         }
