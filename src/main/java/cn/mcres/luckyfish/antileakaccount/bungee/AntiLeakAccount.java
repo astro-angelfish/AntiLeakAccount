@@ -26,6 +26,7 @@ public class AntiLeakAccount extends Plugin {
         whiteListStorage = new WhiteListStorage(getDataFolder());
 
         getProxy().registerChannel("ala:message");
+        getProxy().registerChannel("ala:requests");
         MojangApiHelper.setUserCache(getDataFolder());
         getProxy().getPluginManager().registerListener(this, new PlayerListener());
         getProxy().getPluginManager().registerListener(this, new PluginListener());

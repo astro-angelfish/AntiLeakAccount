@@ -1,6 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.storage;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
+import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
@@ -27,12 +28,17 @@ public class BungeeStorage extends PlayerStorage {
     }
 
     @Override
-    public void addVerifiedPlayer(UUID playerUid) {
+    public void addVerifiedPlayer(UUID playerUid) throws PlayerNotFoundException {
         ByteArrayDataOutput bado = ByteStreams.newDataOutput();
         bado.writeUTF("add");
         bado.writeLong(playerUid.getMostSignificantBits());
         bado.writeLong(playerUid.getLeastSignificantBits());
-        Bukkit.getPlayer(playerUid).sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
+        Player p = Bukkit.getPlayer(playerUid);
+        if (p == null) {
+            throw new PlayerNotFoundException(playerUid);
+        }
+
+        p.sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
     }
 
     @Override

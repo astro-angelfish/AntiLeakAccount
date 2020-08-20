@@ -1,7 +1,5 @@
 package cn.mcres.luckyfish.antileakaccount.verify;
 
-import org.bukkit.entity.Player;
-
 import java.util.UUID;
 
 public class VerifyRequest {
@@ -9,10 +7,16 @@ public class VerifyRequest {
     private final UUID sessionId;
     private final long createdTime;
 
-    protected VerifyRequest(UUID playerId) {
+    public VerifyRequest(UUID playerId) {
         this.playerId = playerId;
         sessionId = UUID.randomUUID();
         createdTime = System.currentTimeMillis();
+    }
+
+    public VerifyRequest(UUID playerId, UUID sessionId, long createdTime) {
+        this.playerId = playerId;
+        this.sessionId = sessionId;
+        this.createdTime = createdTime;
     }
 
     public UUID getPlayerId() {

@@ -5,6 +5,7 @@ import cn.mcres.luckyfish.antileakaccount.bungee.storage.PlayerStorage;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class PluginListener implements Listener {
     private final PlayerStorage ps = AntiLeakAccount.getInstance().getPlayerStorage();
     @EventHandler
-    public void onPluginMessage(PluginMessageEvent event) {
+    public void onPluginMessage1(PluginMessageEvent event) {
         if (!event.getTag().equals("ala:message")) {
             return;
         }
@@ -42,5 +43,27 @@ public class PluginListener implements Listener {
             bado.writeBoolean(success);
             ((Server) event.getSender()).sendData("ala:message", bado.toByteArray());
         }
+    }
+
+    @EventHandler
+    public void onPluginMessage2(PluginMessageEvent event) {
+        if (!event.getTag().equals("ala:requests")) {
+            return;
+        }
+
+        if (!(event.getSender() instanceof Server)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        Server sender = (Server) event.getSender();
+
+        ProxyServer.getInstance().getServers().forEach((name, server) -> {
+            if (sender.getInfo().equals(server)) {
+                return;
+            }
+
+            server.sendData("ala:requests", event.getData());
+        });
     }
 }

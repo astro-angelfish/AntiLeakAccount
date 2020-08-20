@@ -1,6 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.storage;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
+import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -32,7 +33,7 @@ public class PlayerStorage {
         UuidHelper.readUuidListFromFile(storageFile, verifiedPlayerUuids);
     }
 
-    public void addVerifiedPlayer(UUID playerUid) {
+    public void addVerifiedPlayer(UUID playerUid) throws PlayerNotFoundException {
         verifiedPlayerUuids.add(playerUid);
         Bukkit.getScheduler().runTaskAsynchronously(AntiLeakAccount.getInstance(), this::save);
     }
