@@ -27,12 +27,12 @@ public class BungeeStorage extends PlayerStorage {
     }
 
     @Override
-    public void addVerifiedPlayer(Player player) {
+    public void addVerifiedPlayer(UUID playerUid) {
         ByteArrayDataOutput bado = ByteStreams.newDataOutput();
         bado.writeUTF("add");
-        bado.writeLong(player.getUniqueId().getMostSignificantBits());
-        bado.writeLong(player.getUniqueId().getLeastSignificantBits());
-        player.sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
+        bado.writeLong(playerUid.getMostSignificantBits());
+        bado.writeLong(playerUid.getLeastSignificantBits());
+        Bukkit.getPlayer(playerUid).sendPluginMessage(AntiLeakAccount.getInstance(), "ala:message", bado.toByteArray());
     }
 
     @Override

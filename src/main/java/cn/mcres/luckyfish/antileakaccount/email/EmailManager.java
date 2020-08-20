@@ -32,7 +32,7 @@ public class EmailManager {
             email.setMsg("您好，我们需要验证一份Minecraft帐号是否合法。请访问以下地址进行验证: \n" +
                      config.urlFormat
                              .replaceAll("%VERIFY_NAME%", config.verifyName)
-                             .replaceAll("%UUID%", vr.getPlayer().getUniqueId().toString())
+                             .replaceAll("%UUID%", vr.getPlayerId().toString())
                              .replaceAll("%SESSION%", vr.getSessionId().toString().replaceAll("-", ""))
                     + "\n" +
                     "\n" +

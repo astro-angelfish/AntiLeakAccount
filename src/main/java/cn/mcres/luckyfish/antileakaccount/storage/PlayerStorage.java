@@ -4,7 +4,6 @@ import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
 import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +32,8 @@ public class PlayerStorage {
         UuidHelper.readUuidListFromFile(storageFile, verifiedPlayerUuids);
     }
 
-    public void addVerifiedPlayer(Player player) {
-        verifiedPlayerUuids.add(player.getUniqueId());
+    public void addVerifiedPlayer(UUID playerUid) {
+        verifiedPlayerUuids.add(playerUid.getUniqueId());
         Bukkit.getScheduler().runTaskAsynchronously(AntiLeakAccount.getInstance(), this::save);
     }
 

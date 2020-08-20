@@ -2,6 +2,7 @@ package cn.mcres.luckyfish.antileakaccount;
 
 import cn.mcres.luckyfish.antileakaccount.api.ApiServer;
 import cn.mcres.luckyfish.antileakaccount.command.WhiteListAddCommand;
+import cn.mcres.luckyfish.antileakaccount.command.WhiteListImportCommand;
 import cn.mcres.luckyfish.antileakaccount.command.WhiteListListCommand;
 import cn.mcres.luckyfish.antileakaccount.command.WhiteListRemoveCommand;
 import cn.mcres.luckyfish.antileakaccount.http.HttpServer;
@@ -62,6 +63,7 @@ public final class AntiLeakAccount extends JavaPlugin {
             whiteListCommand.registerCommand(new WhiteListAddCommand());
             whiteListCommand.registerCommand(new WhiteListRemoveCommand());
             whiteListCommand.registerCommand(new WhiteListListCommand());
+            whiteListCommand.registerCommand(new WhiteListImportCommand());
             getCommand("alawhitelist").setExecutor(whiteListCommand);
             getCommand("alawhitelist").setTabCompleter(whiteListCommand);
         }

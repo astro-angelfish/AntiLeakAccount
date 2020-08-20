@@ -5,6 +5,7 @@ import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
 import cn.mcres.luckyfish.antileakaccount.storage.BungeeStorage;
 import cn.mcres.luckyfish.antileakaccount.storage.PlayerStorage;
 import cn.mcres.luckyfish.antileakaccount.util.PasswordHelper;
+import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.HumanEntity;
@@ -39,7 +40,7 @@ public class VerifyManager {
     }
 
     public VerifyRequest putRequest(Player player) {
-        VerifyRequest vr = new VerifyRequest(player);
+        VerifyRequest vr = new VerifyRequest(player.getUniqueId());
         requests.put(player.getUniqueId(), vr);
         return vr;
     }
@@ -48,27 +49,35 @@ public class VerifyManager {
         return requests.containsKey(player.getUniqueId());
     }
 
-    public boolean processRequest(String fromIp, UUID uid, String sessionId) {
+    public boolean processRequest(String fromIp, UUID uid, String sessionId) throws PlayerNotFoundException {
         VerifyRequest vr = requests.get(uid);
         if (vr == null) {
             return false;
         }
-        if (vr.getPlayer().getAddress() == null) {
+        Player p = Bukkit.getPlayer(uid);
+        if (p == null) {
+            throw new PlayerNotFoundException(uid);
+        }
+        if (p.getAddress() == null) {
             return false;
         }
-        if (vr.getPlayer().getAddress().isUnresolved() || (!fromIp.equals(vr.getPlayer().getAddress().getHostString()))) {
+        if (p.getAddress().isUnresolved() || (!fromIp.equals(p.getAddress().getHostString()))) {
             return false;
         }
 
         return processSucceedVerifiyRequest(uid, sessionId, vr);
     }
 
-    private boolean processSucceedVerifiyRequest(UUID uid, String sessionId, VerifyRequest vr) {
+    private boolean processSucceedVerifiyRequest(UUID uid, String sessionId, VerifyRequest vr) throws PlayerNotFoundException {
         if (vr.getSessionId().toString().replaceAll("-", "").equals(sessionId)) {
             requests.remove(uid);
-            playerStorage.addVerifiedPlayer(vr.getPlayer());
-
             Player p = Bukkit.getPlayer(uid);
+            if (p == null) {
+                throw new PlayerNotFoundException(uid);
+            }
+
+            playerStorage.addVerifiedPlayer(p.getUniqueId());
+
             if (p != null) {
                 p.sendMessage(ChatColor.GREEN + "你已经验证通过，过得愉快:P");
             }
@@ -78,7 +87,7 @@ public class VerifyManager {
         return false;
     }
 
-    public boolean processRequest(UUID uid, String sessionId) {
+    public boolean processRequest(UUID uid, String sessionId) throws PlayerNotFoundException {
         VerifyRequest vr = requests.get(uid);
         return processSucceedVerifiyRequest(uid, sessionId, vr);
     }

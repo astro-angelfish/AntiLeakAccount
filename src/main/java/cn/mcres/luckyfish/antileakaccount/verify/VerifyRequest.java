@@ -5,18 +5,18 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class VerifyRequest {
-    private final Player player;
+    private final UUID playerId;
     private final UUID sessionId;
     private final long createdTime;
 
-    protected VerifyRequest(Player player) {
-        this.player = player;
+    protected VerifyRequest(UUID playerId) {
+        this.playerId = playerId;
         sessionId = UUID.randomUUID();
         createdTime = System.currentTimeMillis();
     }
 
-    public Player getPlayer() {
-        return player;
+    public UUID getPlayerId() {
+        return playerId;
     }
 
     public UUID getSessionId() {

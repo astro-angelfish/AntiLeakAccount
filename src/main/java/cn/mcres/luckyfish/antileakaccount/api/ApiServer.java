@@ -1,6 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.api;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
+import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import org.bukkit.Bukkit;
 
 import java.io.DataInputStream;
@@ -42,14 +43,20 @@ public class ApiServer {
     private void process(Socket client) {
         try {
             DataInputStream dis = new DataInputStream(client.getInputStream());
-            UUID uid = UUID.fromString(dis.readUTF());
-            String session = dis.readUTF();
-
-            boolean succ = AntiLeakAccount.getInstance().getVerifyManager().processRequest(uid, session);
             DataOutputStream dos = new DataOutputStream(client.getOutputStream());
-            dos.writeInt(succ ? 1 : 0);
+            try {
+                UUID uid = UUID.fromString(dis.readUTF());
+                String session = dis.readUTF();
 
-            client.close();
+                boolean succ = AntiLeakAccount.getInstance().getVerifyManager().processRequest(uid, session);
+                dos.writeInt(succ ? 1 : 0);
+            } catch (PlayerNotFoundException e) {
+                dos.writeInt(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                client.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

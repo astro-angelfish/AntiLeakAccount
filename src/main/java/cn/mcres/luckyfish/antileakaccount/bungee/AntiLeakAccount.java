@@ -5,6 +5,7 @@ import cn.mcres.luckyfish.antileakaccount.bungee.listener.PlayerListener;
 import cn.mcres.luckyfish.antileakaccount.bungee.listener.PluginListener;
 import cn.mcres.luckyfish.antileakaccount.bungee.storage.PlayerStorage;
 import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
+import cn.mcres.luckyfish.antileakaccount.verify.VerifyManager;
 import cn.mcres.luckyfish.antileakaccount.whitelist.WhiteListStorage;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -12,6 +13,7 @@ public class AntiLeakAccount extends Plugin {
     private static AntiLeakAccount instance;
     private PlayerStorage ps;
     private WhiteListStorage whiteListStorage;
+
     @Override
     public void onEnable() {
         instance = this;
