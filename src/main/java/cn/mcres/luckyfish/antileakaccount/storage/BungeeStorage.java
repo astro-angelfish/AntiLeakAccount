@@ -1,7 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.storage;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
-import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
+import cn.mcres.luckyfish.antileakaccount.exception.PlayerNotFoundException;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;

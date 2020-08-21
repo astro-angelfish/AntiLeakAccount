@@ -41,6 +41,7 @@ public class PlayerListener implements Listener {
                 mh.sendMessage(p, "duplicate-authentication", null);
                 return;
             }
+            mh.sendMessage(p, "authenticate-request", null);
             if (MojangApiHelper.validateWithEmailAndPassword(slices[1], vm.fetchPassword(p), p.getUniqueId())) {
                 mh.sendMessage(p, "authenticate-success", null);
                 EmailManager.sendEmail(slices[1], vm.putRequest(p));

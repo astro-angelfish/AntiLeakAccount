@@ -1,7 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.api;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
-import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
+import cn.mcres.luckyfish.antileakaccount.exception.PlayerNotFoundException;
 import org.bukkit.Bukkit;
 
 import java.io.DataInputStream;

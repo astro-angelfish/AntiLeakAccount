@@ -4,6 +4,7 @@ duplicate-verification: "&c你已经验证过了，无需再次验证"
 duplicate-authentication: "&c你的第一步已经完成，请进行第二步"
 invalid-authentication-command: "&c无效的验证命令，用法：.check <邮箱>"
 authenticate-success: "&a第一步验证完成，请前往邮箱完成第二步验证，并修改你的minecraft账户的密码"
+authenticate-request: "&a正在请求验证，请稍等"
 authenticate-fail: "&c无法验证你的帐号:("
 
 spam-message:

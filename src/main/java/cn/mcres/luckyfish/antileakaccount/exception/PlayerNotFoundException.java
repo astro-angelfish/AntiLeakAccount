@@ -1,4 +1,4 @@
-package cn.mcres.luckyfish.antileakaccount.util;
+package cn.mcres.luckyfish.antileakaccount.exception;
 
 import java.util.UUID;
 

@@ -22,6 +22,9 @@ public class MojangApiHelper {
     private static final Gson gson = new Gson();
     private static UserCache userCache = null;
 
+    private static int authCooldown = 20;
+    private static final Object authLock = new Object();
+
     public static void setUserCache(File dataFolder) {
         if (userCache != null) {
             return;
@@ -87,6 +90,17 @@ public class MojangApiHelper {
     }
 
     public static boolean validateWithEmailAndPassword(String email, String password, UUID uuid) {
+        synchronized (authLock) {
+            while (authCooldown > 0) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+
+                }
+            }
+            authCooldown = 20;
+        }
+
         try {
             HttpsURLConnection uc = (HttpsURLConnection) new URL(authUrl).openConnection();
             try {
@@ -125,5 +139,16 @@ public class MojangApiHelper {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    static {
+        Thread daemon = new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {}
+            authCooldown --;
+        });
+        daemon.setDaemon(true);
+        daemon.start();
     }
 }

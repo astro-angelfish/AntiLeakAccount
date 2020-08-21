@@ -1,11 +1,13 @@
 package cn.mcres.luckyfish.antileakaccount.verify;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
+import cn.mcres.luckyfish.antileakaccount.exception.InvalidSessionException;
+import cn.mcres.luckyfish.antileakaccount.exception.PlayerNotFoundException;
+import cn.mcres.luckyfish.antileakaccount.exception.VerificationException;
 import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
 import cn.mcres.luckyfish.antileakaccount.storage.BungeeStorage;
 import cn.mcres.luckyfish.antileakaccount.storage.PlayerStorage;
 import cn.mcres.luckyfish.antileakaccount.util.PasswordHelper;
-import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import cn.mcres.luckyfish.antileakaccount.verify.session.BungeeRequestHolder;
 import cn.mcres.luckyfish.antileakaccount.verify.session.RequestHolder;
 import org.bukkit.Bukkit;
@@ -20,11 +22,14 @@ public class VerifyManager {
     private final PlayerStorage playerStorage;
     private final RequestHolder requestHolder;
     private final Map<UUID, String> passwords = new HashMap<>();
+    private boolean bungeeMode = false;
 
     public VerifyManager() {
         if (AntiLeakAccount.getInstance().getConfigHolder().bungeeMode) {
             playerStorage = new BungeeStorage();
             requestHolder = new BungeeRequestHolder();
+
+            bungeeMode = true;
         } else {
             playerStorage = new PlayerStorage();
             requestHolder = new RequestHolder();
@@ -42,7 +47,7 @@ public class VerifyManager {
         return requestHolder.hasRequest(player.getUniqueId());
     }
 
-    public boolean processRequest(String fromIp, UUID uid, String sessionId) throws PlayerNotFoundException {
+    public boolean processRequest(String fromIp, UUID uid, String sessionId) throws PlayerNotFoundException, VerificationException {
         VerifyRequest vr = requestHolder.getRequest(uid);
         if (vr == null) {
             return false;
@@ -51,17 +56,20 @@ public class VerifyManager {
         if (p == null) {
             throw new PlayerNotFoundException(uid);
         }
-        if (p.getAddress() == null) {
-            return false;
-        }
-        if (p.getAddress().isUnresolved() || (!fromIp.equals(p.getAddress().getHostString()))) {
-            return false;
+
+        if (!bungeeMode) {
+            if (p.getAddress() == null) {
+                return false;
+            }
+            if (p.getAddress().isUnresolved() || (!fromIp.equals(p.getAddress().getHostString()))) {
+                return false;
+            }
         }
 
         return processSucceedVerifiyRequest(uid, sessionId, vr);
     }
 
-    private boolean processSucceedVerifiyRequest(UUID uid, String sessionId, VerifyRequest vr) throws PlayerNotFoundException {
+    private boolean processSucceedVerifiyRequest(UUID uid, String sessionId, VerifyRequest vr) throws PlayerNotFoundException, VerificationException {
         if (vr.getSessionId().toString().replaceAll("-", "").equals(sessionId)) {
             requestHolder.removeRequest(uid);
             Player p = Bukkit.getPlayer(uid);
@@ -74,10 +82,10 @@ public class VerifyManager {
 
             return true;
         }
-        return false;
+        throw new InvalidSessionException();
     }
 
-    public boolean processRequest(UUID uid, String sessionId) throws PlayerNotFoundException {
+    public boolean processRequest(UUID uid, String sessionId) throws PlayerNotFoundException, VerificationException {
         VerifyRequest vr = requestHolder.getRequest(uid);
         return processSucceedVerifiyRequest(uid, sessionId, vr);
     }
