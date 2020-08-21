@@ -1,6 +1,7 @@
 package cn.mcres.luckyfish.antileakaccount.listener;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
+import cn.mcres.luckyfish.antileakaccount.MessageHolder;
 import cn.mcres.luckyfish.antileakaccount.email.EmailManager;
 import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
 import cn.mcres.luckyfish.antileakaccount.verify.VerifyManager;
@@ -18,6 +19,7 @@ import org.bukkit.event.server.TabCompleteEvent;
 
 public class PlayerListener implements Listener {
     private final VerifyManager vm = AntiLeakAccount.getInstance().getVerifyManager();
+    private final MessageHolder mh = AntiLeakAccount.getInstance().getMessageHolder();
 
     @EventHandler(ignoreCancelled = true)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
@@ -26,25 +28,25 @@ public class PlayerListener implements Listener {
             event.setCancelled(true);
             Player p = event.getPlayer();
             if (vm.isVerified(p)) {
-                p.sendMessage("你已经验证过了，无需再次验证");
+                mh.sendMessage(p, "duplicate-verification", null);
                 return;
             }
 
             String[] slices = message.split(" ");
             if (slices.length != 2) {
-                p.sendMessage("无效的验证命令，用法：.check <邮箱>");
+                mh.sendMessage(p, "invalid-authentication-command", null);
                 return;
             }
             if (vm.hasRequest(p)) {
-                p.sendMessage("你的第一步已经完成，请进行第二步");
+                mh.sendMessage(p, "duplicate-authentication", null);
                 return;
             }
             if (MojangApiHelper.validateWithEmailAndPassword(slices[1], vm.fetchPassword(p), p.getUniqueId())) {
-                p.sendMessage("第一步验证完成，请前往邮箱完成第二步验证，并修改你的minecraft账户的密码");
+                mh.sendMessage(p, "authenticate-success", null);
                 EmailManager.sendEmail(slices[1], vm.putRequest(p));
                 return;
             } else {
-                p.sendMessage("无法验证你的帐号:(");
+                mh.sendMessage(p, "authenticate-fail", null);
             }
         }
 

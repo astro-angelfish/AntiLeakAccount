@@ -9,11 +9,12 @@ import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import cn.mcres.luckyfish.antileakaccount.verify.session.BungeeRequestHolder;
 import cn.mcres.luckyfish.antileakaccount.verify.session.RequestHolder;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class VerifyManager {
     private final PlayerStorage playerStorage;
@@ -69,7 +70,7 @@ public class VerifyManager {
             }
 
             playerStorage.addVerifiedPlayer(uid);
-            p.sendMessage(ChatColor.GREEN + "你已经验证通过，过得愉快:P");
+            AntiLeakAccount.getInstance().getMessageHolder().sendMessage(p, "verify-success", null);
 
             return true;
         }

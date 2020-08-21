@@ -12,14 +12,18 @@ import cn.mcres.luckyfish.antileakaccount.task.SpamTask;
 import cn.mcres.luckyfish.antileakaccount.verify.VerifyManager;
 import cn.mcres.luckyfish.antileakaccount.whitelist.WhiteListStorage;
 import cn.mcres.luckyfish.plugincommons.commands.CommonCommand;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 
 public final class AntiLeakAccount extends JavaPlugin {
     private static AntiLeakAccount instance;
 
     private ConfigHolder configHolder;
+    private MessageHolder messageHolder;
+
     private VerifyManager verifyManager;
     private WhiteListStorage whiteListStorage = null;
     private HttpServer hs;
@@ -36,6 +40,9 @@ public final class AntiLeakAccount extends JavaPlugin {
         saveDefaultConfig();
 
         configHolder = new ConfigHolder(getConfig());
+        saveResource("message.yml", false);
+        messageHolder = new MessageHolder(YamlConfiguration.loadConfiguration(new File(getDataFolder(), "message.yml")));
+
         MojangApiHelper.setUserCache(getDataFolder());
         verifyManager = new VerifyManager();
 
@@ -98,5 +105,9 @@ public final class AntiLeakAccount extends JavaPlugin {
 
     public WhiteListStorage getWhiteListStorage() {
         return whiteListStorage;
+    }
+
+    public MessageHolder getMessageHolder() {
+        return messageHolder;
     }
 }
