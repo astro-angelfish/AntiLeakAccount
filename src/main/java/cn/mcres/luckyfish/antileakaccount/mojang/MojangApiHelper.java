@@ -143,10 +143,13 @@ public class MojangApiHelper {
 
     static {
         Thread daemon = new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {}
-            authCooldown --;
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                }
+                authCooldown--;
+            }
         });
         daemon.setDaemon(true);
         daemon.start();
