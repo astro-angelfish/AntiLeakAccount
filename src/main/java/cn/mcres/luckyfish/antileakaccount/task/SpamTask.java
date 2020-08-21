@@ -15,22 +15,24 @@ public class SpamTask implements Runnable {
         VerifyManager vm = AntiLeakAccount.getInstance().getVerifyManager();
         MessageHolder mh = AntiLeakAccount.getInstance().getMessageHolder();
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!vm.isVerified(p)) {
-                String click = mh.getMessage(p, "click-message", null);
-                BaseComponent clickComponent = new TextComponent(click);
-                clickComponent.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, vm.fetchPassword(p)));
+            if (vm.isVerified(p) || !vm.isPlayerLoaded(p)) {
+                continue;
+            }
 
-                for (String msg : mh.getMessages(p, "spam-message", null)) {
-                    BaseComponent base = new TextComponent();
-                    String[] slices = msg.split("%CLICK_MESSAGE%");
-                    for (int i = 0; i < slices.length; i ++) {
-                        base.addExtra(slices[i]);
-                        if (i != slices.length - 1) {
-                            base.addExtra(clickComponent);
-                        }
+            String click = mh.getMessage(p, "click-message", null);
+            BaseComponent clickComponent = new TextComponent(click);
+            clickComponent.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, vm.fetchPassword(p)));
+
+            for (String msg : mh.getMessages(p, "spam-message", null)) {
+                BaseComponent base = new TextComponent();
+                String[] slices = msg.split("%CLICK_MESSAGE%");
+                for (int i = 0; i < slices.length; i ++) {
+                    base.addExtra(slices[i]);
+                    if (i != slices.length - 1) {
+                        base.addExtra(clickComponent);
                     }
-                    p.spigot().sendMessage(base);
                 }
+                p.spigot().sendMessage(base);
             }
         }
     }

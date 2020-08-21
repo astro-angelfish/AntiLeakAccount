@@ -5,6 +5,7 @@ import cn.mcres.luckyfish.antileakaccount.util.PlayerNotFoundException;
 import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,5 +45,9 @@ public class PlayerStorage {
 
     public void save() {
         UuidHelper.writeUuidListToFile(new File(AntiLeakAccount.getInstance().getDataFolder(), "verifiedPlayers.dat"), verifiedPlayerUuids);
+    }
+
+    public boolean isPlayerLoaded(Player player) {
+        return true;
     }
 }

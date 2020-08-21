@@ -16,3 +16,5 @@ email-message:
   - "%VERIFY_URL%"
   - ""
   - "如果您没有进行此操作，通常说明你的Minecraft帐号出现了一个安全问题，请尽快重置您的Minecraft帐号的密码以及安全问题"
+
+loading: "&a正在调取你的玩家数据，请稍候..."

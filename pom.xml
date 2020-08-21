@@ -6,7 +6,7 @@
 
     <groupId>cn.mcres.luckyfish</groupId>
     <artifactId>AntiLeakAccount</artifactId>
-    <version>1.1.2-BETA</version>
+    <version>1.2.0-BETA</version>
     <packaging>jar</packaging>
 
     <name>AntiLeakAccount</name>

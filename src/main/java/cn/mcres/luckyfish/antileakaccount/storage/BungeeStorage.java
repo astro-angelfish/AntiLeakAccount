@@ -16,6 +16,7 @@ import java.util.UUID;
 
 public class BungeeStorage extends PlayerStorage {
     private final List<UUID> verifiedPlayers = new ArrayList<>();
+    private final List<UUID> fetchedPlayers = new ArrayList<>();
 
     public BungeeStorage() {
         super();
@@ -60,12 +61,18 @@ public class BungeeStorage extends PlayerStorage {
     public void save() {
     }
 
+    @Override
+    public boolean isPlayerLoaded(Player player) {
+        return fetchedPlayers.contains(player.getUniqueId());
+    }
+
     private class BungeeCommunicator implements PluginMessageListener {
         @Override
         public void onPluginMessageReceived(String channel, Player player, byte[] message) {
             ByteArrayDataInput badi = ByteStreams.newDataInput(message);
             if (badi.readUTF().equals("result")) {
                 UUID uid = new UUID(badi.readLong(), badi.readLong());
+                fetchedPlayers.add(uid);
                 if (badi.readBoolean()) {
                     verifiedPlayers.add(uid);
                 } else {

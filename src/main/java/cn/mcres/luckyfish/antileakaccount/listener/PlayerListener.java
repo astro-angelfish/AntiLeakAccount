@@ -187,6 +187,10 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (!vm.isPlayerLoaded(event.getPlayer())) {
+            mh.sendMessage(event.getPlayer(), "loading", null);
+        }
+
         if (!vm.isVerified(event.getPlayer())) {
             event.setJoinMessage("");
         }

@@ -104,4 +104,8 @@ public class VerifyManager {
         }
         return playerStorage.isPlayerVerified(player);
     }
+
+    public boolean isPlayerLoaded(Player player) {
+        return playerStorage.isPlayerLoaded(player);
+    }
 }
