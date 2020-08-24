@@ -1,8 +1,8 @@
 package cn.mcres.luckyfish.antileakaccount.http;
 
 import cn.mcres.luckyfish.antileakaccount.AntiLeakAccount;
-import fi.iki.elonen.NanoHTTPD;
 import org.bukkit.Bukkit;
+import org.nanohttpd.protocols.http.NanoHTTPD;
 
 import java.util.UUID;
 import java.util.concurrent.Future;
