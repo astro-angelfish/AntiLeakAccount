@@ -1,6 +1,7 @@
 httpd:
   enabled: false
   port: 80
+  ban-on-spam: false
 
 # api 用法：朝配置的端口发送字节流
 # 第一段为访问的uuid，第二段为生成的session id

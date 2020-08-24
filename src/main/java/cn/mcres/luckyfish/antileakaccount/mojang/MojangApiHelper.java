@@ -123,8 +123,7 @@ public class MojangApiHelper {
                 osw.write(gson.toJson(payload));
                 osw.flush();
 
-                Map<String, Object> response = gson.fromJson(new InputStreamReader(uc.getInputStream()), new TypeToken<Map<String, Object>>() {
-                }.getType());
+                Map<String, Object> response = gson.fromJson(new InputStreamReader(uc.getInputStream()), new TypeToken<Map<String, Object>>() {}.getType());
                 String accessToken = response.get("accessToken").toString();
                 Map<String, Object> selectedProfile = (Map<String, Object>) response.get("selectedProfile");
                 if (selectedProfile == null) {

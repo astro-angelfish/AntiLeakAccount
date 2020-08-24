@@ -1,14 +1,11 @@
 package cn.mcres.luckyfish.antileakaccount;
 
 import cn.mcres.luckyfish.antileakaccount.api.ApiServer;
-import cn.mcres.luckyfish.antileakaccount.command.WhiteListAddCommand;
-import cn.mcres.luckyfish.antileakaccount.command.WhiteListImportCommand;
-import cn.mcres.luckyfish.antileakaccount.command.WhiteListListCommand;
-import cn.mcres.luckyfish.antileakaccount.command.WhiteListRemoveCommand;
+import cn.mcres.luckyfish.antileakaccount.command.*;
 import cn.mcres.luckyfish.antileakaccount.http.HttpServer;
 import cn.mcres.luckyfish.antileakaccount.listener.PlayerListener;
 import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
-import cn.mcres.luckyfish.antileakaccount.task.SpamTask;
+import cn.mcres.luckyfish.antileakaccount.task.PlayerTask;
 import cn.mcres.luckyfish.antileakaccount.verify.VerifyManager;
 import cn.mcres.luckyfish.antileakaccount.whitelist.WhiteListStorage;
 import cn.mcres.luckyfish.plugincommons.commands.CommonCommand;
@@ -75,15 +72,16 @@ public final class AntiLeakAccount extends JavaPlugin {
             getCommand("alawhitelist").setTabCompleter(whiteListCommand);
         }
 
+        getCommand("alareload").setExecutor(new ReloadCommand());
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        getServer().getScheduler().runTaskTimer(this, new SpamTask(), configHolder.spamInterval, configHolder.spamInterval);
+        getServer().getScheduler().runTaskTimer(this, new PlayerTask(), configHolder.spamInterval, configHolder.spamInterval);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         if (configHolder.httpdEnabled) {
-            hs.stop();
+            hs.closeAllConnections();
         }
 
         if (configHolder.apiEnabled) {

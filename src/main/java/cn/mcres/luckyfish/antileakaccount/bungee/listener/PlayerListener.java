@@ -14,7 +14,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(ChatEvent event) {
         if (event.getSender() instanceof ProxiedPlayer) {
             ProxiedPlayer p = (ProxiedPlayer) event.getSender();
-            if ((!ps.isPlayerVerified(p)) && (!event.getMessage().startsWith(".check"))) {
+            if (!ps.isPlayerVerified(p) && !event.getMessage().startsWith(".check") && !event.getMessage().startsWith(".renew") && !event.getMessage().startsWith(".display")) {
                 event.setCancelled(true);
             }
         }

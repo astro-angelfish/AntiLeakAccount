@@ -21,6 +21,9 @@ public class MessageHolder {
 
     public String getMessage(Player player, String messageKey, BiFunction<Player, String, String> replacer) {
         String message = cs.getString(messageKey);
+        if (message == null) {
+            message = messageKey;
+        }
         if (replacer != null) {
             message = replacer.apply(player, message);
         }

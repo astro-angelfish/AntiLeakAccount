@@ -63,6 +63,14 @@ public class WhiteListStorage {
     public void importAllFromList(List<UUID> list) {
         whiteList.addAll(list);
         new Thread(this::save).start();
+
+        // verify them.
+        for (UUID uid : list) {
+            if (!whiteList.contains(uid)) {
+                System.err.println("Fail to verify uuid: " + uid + ", re-adding");
+                whiteList.add(uid);
+            }
+        }
     }
 
     public boolean isPlayerWhiteListed(String name) {

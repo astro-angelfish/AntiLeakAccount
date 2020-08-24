@@ -79,6 +79,7 @@ public class VerifyManager {
 
             playerStorage.addVerifiedPlayer(uid);
             AntiLeakAccount.getInstance().getMessageHolder().sendMessage(p, "verify-success", null);
+            passwords.remove(uid);
 
             return true;
         }
@@ -95,10 +96,18 @@ public class VerifyManager {
             return null;
         }
         if (!passwords.containsKey(player.getUniqueId())) {
-            passwords.put(player.getUniqueId(), PasswordHelper.generatePassword());
+            renewPassword(player);
         }
 
         return passwords.get(player.getUniqueId());
+    }
+
+    public void renewPassword(Player player) {
+        if (isVerified(player)) {
+            return;
+        }
+
+        passwords.put(player.getUniqueId(), PasswordHelper.generatePassword());
     }
 
     public boolean isVerified(HumanEntity player) {

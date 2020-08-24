@@ -10,6 +10,11 @@ authenticate-fail: "&c无法验证你的帐号:("
 spam-message:
   - "&c你需要验证你的账户，请 %CLICK_MESSAGE% &c将密码复制到粘贴板，并将你的Minecraft账户密码改为它，并输入\".check 你的邮箱\"以进行验证"
 click-message: "&6点击这里"
+click-hover-message: "&a就是这里，如果复制失败请考虑使用.display以显示你的密码"
+
+no-need-display: "&c你已经通过第一步验证，无需再显示密码"
+password-title: "&a你的密码是"
+password-subtitle: "&6%PASSWORD%"
 
 email-title: "正版邮箱验证"
 email-message:
@@ -19,3 +24,6 @@ email-message:
   - "如果您没有进行此操作，通常说明你的Minecraft帐号出现了一个安全问题，请尽快重置您的Minecraft帐号的密码以及安全问题"
 
 loading: "&a正在调取你的玩家数据，请稍候..."
+
+renew-success: "&a已成功为你刷新密码"
+no-need-renew: "&c你已经通过第一步验证，无需验证密码"

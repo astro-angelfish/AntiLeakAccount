@@ -5,6 +5,8 @@ import org.bukkit.configuration.ConfigurationSection;
 public class ConfigHolder {
     public final boolean httpdEnabled;
     public final int httpdPort;
+    public final boolean httpdBanOnSpam;
+
     public final boolean apiEnabled;
     public final int apiPort;
 
@@ -27,6 +29,7 @@ public class ConfigHolder {
     public ConfigHolder(ConfigurationSection cs) {
         httpdEnabled = cs.getBoolean("httpd.enabled");
         httpdPort = cs.getInt("httpd.port");
+        httpdBanOnSpam = cs.getBoolean("httpd.ban-on-spam");
 
         apiEnabled = cs.getBoolean("api.enabled");
         apiPort = cs.getInt("api.port");

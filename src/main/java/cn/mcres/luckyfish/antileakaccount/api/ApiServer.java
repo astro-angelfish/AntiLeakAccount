@@ -30,7 +30,7 @@ public class ApiServer {
 
                 Bukkit.getScheduler().runTaskAsynchronously(AntiLeakAccount.getInstance(), () -> process(client));
             } catch (IOException e) {
-                e.printStackTrace();
+
             }
         }
         try {

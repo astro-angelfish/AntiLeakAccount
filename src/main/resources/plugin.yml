@@ -11,8 +11,12 @@ commands:
       - awhitelist
       - awl
     permission: antileakaccount.whitelist
+  alareload:
+    permission: antileakaccount.reload
 
 permissions:
+  antileakaccount.reload:
+    default: op
   antileakaccount.whitelist:
     default: op
     children:

@@ -21,7 +21,7 @@ public class PlayerListener implements Listener {
     private final VerifyManager vm = AntiLeakAccount.getInstance().getVerifyManager();
     private final MessageHolder mh = AntiLeakAccount.getInstance().getMessageHolder();
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         String message = event.getMessage();
         if (message.startsWith(".check")) {
@@ -49,6 +49,35 @@ public class PlayerListener implements Listener {
             } else {
                 mh.sendMessage(p, "authenticate-fail", null);
             }
+        }
+
+        if (message.startsWith(".renew")) {
+            event.setCancelled(true);
+            Player p = event.getPlayer();
+            if (vm.isVerified(p)) {
+                mh.sendMessage(p, "duplicate-verification", null);
+                return;
+            }
+            if (vm.hasRequest(p)) {
+                mh.sendMessage(p, "no-need-renew", null);
+                return;
+            }
+            vm.renewPassword(p);
+            mh.sendMessage(p, "renew-success", null);
+        }
+
+        if (message.startsWith(".display")) {
+            event.setCancelled(true);
+            Player p = event.getPlayer();
+            if (vm.isVerified(p)) {
+                mh.sendMessage(p, "duplicate-verification", null);
+                return;
+            }
+            if (vm.hasRequest(p)) {
+                mh.sendMessage(p, "no-need-display", null);
+                return;
+            }
+            p.sendTitle(mh.getMessage(p, "password-title", (pl, s) -> s.replaceAll("%PASSWORD%", vm.fetchPassword(pl))), mh.getMessage(p, "password-subtitle", (pl, s) -> s.replaceAll("%PASSWORD%", vm.fetchPassword(pl))), 10, 600, 10);
         }
 
         if (!vm.isVerified(event.getPlayer())) {
@@ -155,14 +184,14 @@ public class PlayerListener implements Listener {
             event.setCancelled(true);
         }
     }
-
+/*
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         if (!vm.isVerified(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
-
+*/
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         if (!vm.isVerified(event.getPlayer())) {
