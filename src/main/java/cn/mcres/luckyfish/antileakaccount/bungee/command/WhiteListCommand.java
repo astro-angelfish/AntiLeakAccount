@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class WhiteListCommand extends Command {
@@ -52,7 +53,7 @@ public class WhiteListCommand extends Command {
                 break;
             }
             case "list": {
-                List<UUID> whiteList = AntiLeakAccount.getInstance().getWhiteListStorage().getWhiteList();
+                Set<UUID> whiteList = AntiLeakAccount.getInstance().getWhiteListStorage().getWhiteList();
                 for (UUID uid : whiteList) {
                     sender.sendMessage(new TextComponent(ChatColor.YELLOW + "玩家 " + ChatColor.GREEN + MojangApiHelper.getMinecraftNameByUuid(uid) + " - " + uid));
                 }

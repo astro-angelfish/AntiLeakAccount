@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class WhiteListListCommand extends SubCommandBase {
@@ -32,7 +32,7 @@ public class WhiteListListCommand extends SubCommandBase {
             return false;
         }
 
-        List<UUID> whiteList = AntiLeakAccount.getInstance().getWhiteListStorage().getWhiteList();
+        Set<UUID> whiteList = AntiLeakAccount.getInstance().getWhiteListStorage().getWhiteList();
         for (UUID uid : whiteList) {
             sender.sendMessage(ChatColor.YELLOW + "玩家 " + ChatColor.GREEN + MojangApiHelper.getMinecraftNameByUuid(uid) + " - " + uid);
         }

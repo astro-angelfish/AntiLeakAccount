@@ -4,14 +4,11 @@ import cn.mcres.luckyfish.antileakaccount.mojang.MojangApiHelper;
 import cn.mcres.luckyfish.antileakaccount.util.UuidHelper;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class WhiteListStorage {
     private final File whiteListFile;
-    private final List<UUID> whiteList = new ArrayList<>();
+    private final Set<UUID> whiteList = new HashSet<>();
     public WhiteListStorage(File dataFolder) {
         whiteListFile = new File(dataFolder, "whitelist.dat");
         if (!whiteListFile.exists()) {
@@ -85,7 +82,7 @@ public class WhiteListStorage {
         UuidHelper.writeUuidListToFile(whiteListFile, whiteList);
     }
 
-    public List<UUID> getWhiteList() {
-        return Collections.unmodifiableList(whiteList);
+    public Set<UUID> getWhiteList() {
+        return Collections.unmodifiableSet(whiteList);
     }
 }
