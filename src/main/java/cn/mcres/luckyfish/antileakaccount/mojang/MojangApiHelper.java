@@ -20,12 +20,14 @@ public class MojangApiHelper {
     private static final UserCache userCache = new UserCache();
 
     public static String getMinecraftNameByUuid(UUID uuid) {
+        // 优先从服务器缓存获取
         String cache = userCache.getCachedUsername(uuid);
         if (cache != null) {
             return cache;
         }
 
         try {
+            // 找mojang获取
             URL url = new URL(profileUrl + uuid.toString().replaceAll("-", ""));
             HttpsURLConnection uc = (HttpsURLConnection) url.openConnection();
             uc.setRequestMethod("GET");
@@ -49,6 +51,7 @@ public class MojangApiHelper {
 
     public static boolean validateWithEmailAndPassword(String email, String password, UUID uuid) {
         try {
+            // 找mojang登录以验证邮箱
             HttpsURLConnection uc = (HttpsURLConnection) new URL(authUrl).openConnection();
             try {
                 uc.setRequestMethod("POST");

@@ -11,7 +11,9 @@ public class VerifyRequest {
 
     protected VerifyRequest(Player player) {
         this.player = player;
+        // 随机生成uuid作为会话id
         sessionId = UUID.randomUUID();
+        // 创建时间
         createdTime = System.currentTimeMillis();
     }
 

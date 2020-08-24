@@ -13,6 +13,7 @@ public class VerifyManager {
     private final Map<UUID, VerifyRequest> requests = new HashMap<>();
 
     public VerifyManager() {
+        // 定时任务移除超时请求
         Bukkit.getScheduler().runTaskTimer(AntiLeakAccount.getInstance(), () -> {
             List<UUID> removingUids = new ArrayList<>();
             requests.forEach((uid, request) -> {
@@ -28,6 +29,7 @@ public class VerifyManager {
     }
 
     public VerifyRequest putRequest(Player player) {
+        // 添加请求
         VerifyRequest vr = new VerifyRequest(player);
         requests.put(player.getUniqueId(), vr);
         return vr;
@@ -35,9 +37,12 @@ public class VerifyManager {
 
     public boolean processRequest(String fromIp, UUID uid, String sessionId) {
         VerifyRequest vr = requests.get(uid);
+        // 请求不存在
         if (vr == null) {
             return false;
         }
+        // ip不对
+        // TODO: 在bungee模式下不验证ip
         if (vr.getPlayer().getAddress() == null) {
             return false;
         }
@@ -45,6 +50,7 @@ public class VerifyManager {
             return false;
         }
 
+        // 验证通过
         if (vr.getSessionId().toString().replaceAll("-", "").equals(sessionId)) {
             requests.remove(uid);
             playerStorage.addVerifiedPlayer(vr.getPlayer());
@@ -55,7 +61,9 @@ public class VerifyManager {
     }
 
     public boolean processRequest(UUID uid, String sessionId) {
+        // 直接处理请求而不验证ip有效性
         VerifyRequest vr = requests.get(uid);
+        // TODO: 请求可能不存在
         if (vr.getSessionId().toString().replaceAll("-", "").equals(sessionId)) {
             requests.remove(uid);
             playerStorage.addVerifiedPlayer(vr.getPlayer());
@@ -66,6 +74,8 @@ public class VerifyManager {
     }
 
     public boolean isVerified(Player player) {
+        // 是否验证通过
+        // 盗版玩家或者验证通过时返回true
         return (!player.getName().equals(MojangApiHelper.getMinecraftNameByUuid(player.getUniqueId()))) || playerStorage.isPlayerVerified(player);
     }
 }

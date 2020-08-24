@@ -16,7 +16,6 @@ public final class AntiLeakAccount extends JavaPlugin {
     private VerifyManager verifyManager;
     @Override
     public void onEnable() {
-        // Plugin startup logic
         instance = this;
 
         if (!getDataFolder().exists()) {
@@ -39,6 +38,7 @@ public final class AntiLeakAccount extends JavaPlugin {
         if (configHolder.apiEnabled) {
             new ApiServer();
         }
+
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getScheduler().runTaskTimer(this, new SpamTask(), 40, 40);
     }

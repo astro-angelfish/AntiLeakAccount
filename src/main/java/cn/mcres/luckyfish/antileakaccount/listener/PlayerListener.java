@@ -21,6 +21,8 @@ public class PlayerListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         String message = event.getMessage();
+        // .check 验证 回滚到很久以前所以还是向玩家索要密码
+        // TODO: 改为生成密码
         if (message.startsWith(".check")) {
             event.setCancelled(true);
             Player p = event.getPlayer();
@@ -28,12 +30,14 @@ public class PlayerListener implements Listener {
                 p.sendMessage("你已经验证过了，无需再次验证");
                 return;
             }
+            // TODO: 补充刷mojang登录
 
             String[] slices = message.split(" ");
             if (slices.length != 3) {
                 p.sendMessage("无效的验证命令，用法：.check <邮箱> <密码>");
                 return;
             }
+            // 验证账户的合法拥有性
             if (MojangApiHelper.validateWithEmailAndPassword(slices[1], slices[2], p.getUniqueId())) {
                 p.sendMessage("第一步验证完成，请前往邮箱完成第二步验证");
                 EmailManager.sendEmail(slices[1], vm.putRequest(p));

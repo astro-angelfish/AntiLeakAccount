@@ -41,6 +41,7 @@ public class ApiServer {
 
     private void process(Socket client) {
         try {
+            // 处理api端请求
             DataInputStream dis = new DataInputStream(client.getInputStream());
             UUID uid = UUID.fromString(dis.readUTF());
             String session = dis.readUTF();

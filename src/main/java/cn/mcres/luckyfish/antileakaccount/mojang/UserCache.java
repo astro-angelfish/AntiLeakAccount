@@ -22,6 +22,7 @@ public class UserCache {
             }
         }
 
+        // 读取缓存
         try (DataInputStream dis = new DataInputStream(new FileInputStream(cacheFile))) {
             int amount = dis.readInt();
             for (int i = 0; i < amount; i ++) {
@@ -42,6 +43,7 @@ public class UserCache {
     }
 
     public String getCachedUsername(UUID uuid) {
+        // 获取缓存玩家
         if (!cachedUserMap.containsKey(uuid)) {
             return null;
         }
@@ -55,6 +57,7 @@ public class UserCache {
     }
 
     public void writeUser(UUID uuid, String name) {
+        // 添加缓存玩家
         CachedUser cu = new CachedUser(name);
         cachedUserMap.put(uuid, cu);
 
@@ -62,6 +65,7 @@ public class UserCache {
     }
 
     private void writeToFile() {
+        // 将所有缓存写入文件
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(cacheFile))) {
             dos.writeInt(cachedUserMap.size());
             cachedUserMap.forEach((uid, user) -> {
